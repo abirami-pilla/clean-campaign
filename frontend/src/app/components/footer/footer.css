@@ -1,0 +1,19 @@
+.footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  background-color: #00aaff;
+  color: white;
+
+  .socials {
+    margin-bottom: 0.5rem;
+
+    a {
+      margin: 0 0.5rem;
+      img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1); 
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<header class="header">
+  <div class="logo">Clean Beach Campaign</div>
+  
+  <div class="admin-contact" [ngClass]="{ 'open': dropdownOpen }" (mouseenter)="dropdownOpen = true" (mouseleave)="dropdownOpen = false">
+    <span class="admin-name">Contact Admin ▾</span>
+    <div class="dropdown">
+      <p><strong>{{ admin.name }}</strong></p>
+      <p>📞 {{ admin.phone }}</p>
+      <p>✉️ {{ admin.email }}</p>
+    </div>
+  </div>
+</header>
