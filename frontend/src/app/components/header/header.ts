@@ -1,20 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule], 
+  imports: [CommonModule],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
-
 export class HeaderComponent {
-  dropdownOpen = false;
-
-  admin = {
-    name: 'John Doe',
-    phone: '+91 9876543210',
-    email: 'admin@cleanbeach.org'
-  };
+  title = 'Clean Campaign Initiative';
+  subtitle = 'Join the movement to make our environment cleaner and greener';
+  
+  currentDate = new Date();
 }
