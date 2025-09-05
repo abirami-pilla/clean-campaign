@@ -2,43 +2,31 @@
   <div class="container">
     <div class="footer-content">
       <div class="footer-section">
-        <h3 class="footer-title">Clean Campaign Initiative</h3>
+        <h3 class="footer-title"><i class="fas fa-leaf"></i> Clean Campaign Initiative</h3>
         <p class="footer-description">
           Working together to create a cleaner, greener future for our communities.
-          Every action counts, and every volunteer makes a difference.
         </p>
         <div class="social-links">
           <a *ngFor="let link of socialLinks" 
              [href]="link.url" 
              [title]="link.name"
-             class="social-link">
-            {{ link.icon }}
+             class="social-link"
+             [ngClass]="link.iconClass">
           </a>
         </div>
       </div>
       
       <div class="footer-section">
-        <h4 class="section-title">Quick Links</h4>
-        <ul class="footer-links">
-          <li *ngFor="let link of quickLinks">
-            <a [href]="link.url" class="footer-link">{{ link.name }}</a>
-          </li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
         <h4 class="section-title">Contact Info</h4>
         <div class="contact-info">
-          <p><span class="contact-icon">📧</span> info@cleancampaign.org</p>
-          <p><span class="contact-icon">📞</span> +1 (555) 123-4567</p>
-          <p><span class="contact-icon">📍</span> 123 Green Street, Eco City</p>
+          <p><i class="fas fa-phone"></i> +91 9876543210</p>
+          <p><i class="fas fa-envelope"></i> admin@cleanbeach.org</p>
         </div>
       </div>
     </div>
     
     <div class="footer-bottom">
       <p>&copy; {{ currentYear }} Clean Campaign Initiative. All rights reserved.</p>
-      <p class="footer-tagline">🌱 Together for a cleaner tomorrow</p>
     </div>
   </div>
 </footer>

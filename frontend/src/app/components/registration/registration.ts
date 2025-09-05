@@ -16,10 +16,8 @@ export class RegistrationComponent implements OnInit {
   userRegistration: User = {
     name: '',
     email: '',
-    age: 0,
     location: '',
-    campaignName: '',
-    phoneNumber: ''
+    campaignName: ''
   };
 
   campaignOptions: CampaignOption[] = [];
@@ -50,12 +48,6 @@ export class RegistrationComponent implements OnInit {
       isValid = false;
     }
 
-    // Age validation
-    if (!this.userRegistration.age || this.userRegistration.age < 13 || this.userRegistration.age > 120) {
-      this.formErrors['age'] = 'Age must be between 13 and 120 years';
-      isValid = false;
-    }
-
     // Location validation
     if (!this.userRegistration.location || this.userRegistration.location.trim().length < 2) {
       this.formErrors['location'] = 'Location must be at least 2 characters long';
@@ -66,15 +58,6 @@ export class RegistrationComponent implements OnInit {
     if (!this.userRegistration.campaignName) {
       this.formErrors['campaignName'] = 'Please select a campaign';
       isValid = false;
-    }
-
-    // Phone validation (optional but if provided, must be valid)
-    if (this.userRegistration.phoneNumber && this.userRegistration.phoneNumber.trim()) {
-      const phoneRegex = /^[\+]?[\d\-\s\(\)]+$/;
-      if (!phoneRegex.test(this.userRegistration.phoneNumber) || this.userRegistration.phoneNumber.length < 10) {
-        this.formErrors['phoneNumber'] = 'Please enter a valid phone number';
-        isValid = false;
-      }
     }
 
     return isValid;
@@ -107,10 +90,8 @@ export class RegistrationComponent implements OnInit {
     this.userRegistration = {
       name: '',
       email: '',
-      age: 0,
       location: '',
-      campaignName: '',
-      phoneNumber: ''
+      campaignName: ''
     };
     this.formErrors = {};
   }
