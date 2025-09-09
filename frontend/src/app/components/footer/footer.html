@@ -1,9 +1,32 @@
 <footer class="footer">
-  <div class="socials">
-    <a href="#" target="_blank"><img src="assets/icons/facebook.svg" alt="Facebook"></a>
-    <a href="#" target="_blank"><img src="assets/icons/twitter.svg" alt="Twitter"></a>
-    <a href="#" target="_blank"><img src="assets/icons/instagram.svg" alt="Instagram"></a>
-    <a href="#" target="_blank"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3 class="footer-title"><i class="fas fa-leaf"></i> Clean Campaign Initiative</h3>
+        <p class="footer-description">
+          Working together to create a cleaner, greener future for our communities.
+        </p>
+        <div class="social-links">
+          <a *ngFor="let link of socialLinks" 
+             [href]="link.url" 
+             [title]="link.name"
+             class="social-link"
+             [ngClass]="link.iconClass">
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4 class="section-title">Contact Info</h4>
+        <div class="contact-info">
+          <p><i class="fas fa-phone"></i> +91 9876543210</p>
+          <p><i class="fas fa-envelope"></i> admin@cleanbeach.org</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} Clean Campaign Initiative. All rights reserved.</p>
+    </div>
   </div>
-  <p>© 2025 Clean Beach Campaign. All rights reserved.</p>
 </footer>

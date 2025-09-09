@@ -1,64 +1,118 @@
-<div class="container mt-5">
-  <div class="card shadow-sm p-4">
-    <h2 class="text-center mb-4">Clean Beach Campaign Registration</h2>
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" novalidate>
+<div class="registration-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 class="form-title">Join a Clean Campaign</h2>
+    </div>
 
-      <!-- Name -->
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" id="name" class="form-control" formControlName="name"
-               [ngClass]="{'is-invalid': submitted && f['name'].errors}">
-        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
-          <div *ngIf="f['name'].errors?.['required']">Name is required</div>
-          <div *ngIf="f['name'].errors?.['minlength']">Name must be at least 3 characters</div>
+    <div *ngIf="showSuccess" class="success-message" [@fadeIn]>
+      <strong>🎉 Registration Successful!</strong>
+      <p>Thank you for joining our clean campaign initiative. Together, we'll make our environment better!</p>
+    </div>
+
+    <form #registrationForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Full Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="userRegistration.name"
+          class="form-control"
+          [class.invalid]="hasError('name')"
+          placeholder="Enter your full name"
+          required>
+        <span *ngIf="hasError('name')" class="error-message">{{ getError('name') }}</span>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="userRegistration.email"
+          class="form-control"
+          [class.invalid]="hasError('email')"
+          placeholder="Enter your email address"
+          required>
+        <span *ngIf="hasError('email')" class="error-message">{{ getError('email') }}</span>
+      </div>
+
+      <!-- Location Field -->
+      <div class="form-group">
+        <label for="location">Location *</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          [(ngModel)]="userRegistration.location"
+          class="form-control"
+          [class.invalid]="hasError('location')"
+          placeholder="Enter your city/location"
+          required>
+        <span *ngIf="hasError('location')" class="error-message">{{ getError('location') }}</span>
+      </div>
+
+      <!-- Campaign Selection -->
+      <div class="form-group">
+        <label for="campaignName">Select Campaign *</label>
+        <select
+          id="campaignName"
+          name="campaignName"
+          [(ngModel)]="userRegistration.campaignName"
+          class="form-control campaign-select"
+          [class.invalid]="hasError('campaignName')"
+          required>
+          <option value="">Choose a campaign to join...</option>
+          <option *ngFor="let campaign of campaignOptions" [value]="campaign.value">
+            {{ campaign.label }}
+          </option>
+        </select>
+        <span *ngIf="hasError('campaignName')" class="error-message">{{ getError('campaignName') }}</span>
+        
+        <!-- Campaign Description -->
+        <div *ngIf="getSelectedCampaign()" class="campaign-description" [@slideIn]>
+          <div class="campaign-info">
+            <span class="campaign-icon">🌟</span>
+            <p>{{ getSelectedCampaign()?.description }}</p>
+          </div>
         </div>
       </div>
 
-      <!-- Email -->
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" class="form-control" formControlName="email"
-               [ngClass]="{'is-invalid': submitted && f['email'].errors}">
-        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-          <div *ngIf="f['email'].errors?.['required']">Email is required</div>
-          <div *ngIf="f['email'].errors?.['email']">Invalid email format</div>
-        </div>
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary submit-btn"
+          [disabled]="isSubmitting"
+          [class.loading]="isSubmitting">
+          <span *ngIf="!isSubmitting">Register Now</span>
+          <span *ngIf="isSubmitting" class="loading-text">
+            <span class="spinner"></span>
+            Registering...
+          </span>
+        </button>
+        
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="resetForm()"
+          [disabled]="isSubmitting">
+          Clear Form
+        </button>
       </div>
 
-      <!-- Age -->
-      <div class="mb-3">
-        <label for="age" class="form-label">Age</label>
-        <input type="number" id="age" class="form-control" formControlName="age"
-               [ngClass]="{'is-invalid': submitted && f['age'].errors}">
-        <div *ngIf="submitted && f['age'].errors" class="invalid-feedback">
-          <div *ngIf="f['age'].errors?.['required']">Age is required</div>
-          <div *ngIf="f['age'].errors?.['min']">Minimum age is 10</div>
-          <div *ngIf="f['age'].errors?.['max']">Maximum age is 100</div>
-        </div>
-      </div>
-
-      <!-- Occupation -->
-      <div class="mb-3">
-        <label for="occupation" class="form-label">Occupation</label>
-        <input type="text" id="occupation" class="form-control" formControlName="occupation"
-               [ngClass]="{'is-invalid': submitted && f['occupation'].errors}">
-        <div *ngIf="submitted && f['occupation'].errors" class="invalid-feedback">
-          <div *ngIf="f['occupation'].errors?.['required']">Occupation is required</div>
-        </div>
-      </div>
-
-      <!-- Location -->
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" id="location" class="form-control" formControlName="location"
-               [ngClass]="{'is-invalid': submitted && f['location'].errors}">
-        <div *ngIf="submitted && f['location'].errors" class="invalid-feedback">
-          <div *ngIf="f['location'].errors?.['required']">Location is required</div>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary w-100">Register</button>
+      <!-- Form Status -->
+      <!-- <div class="form-status" *ngIf="Object.keys(formErrors).length > 0">
+        <p class="error-summary">
+          <strong>⚠️ Please fix the following errors:</strong>
+        </p>
+        <ul class="error-list">
+          <li *ngFor="let error of formErrors | keyvalue">{{ error.value }}</li>
+        </ul>
+      </div> -->
     </form>
   </div>
 </div>

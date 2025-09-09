@@ -1,12 +1,16 @@
 <header class="header">
-  <div class="logo">Clean Beach Campaign</div>
-  
-  <div class="admin-contact" [ngClass]="{ 'open': dropdownOpen }" (mouseenter)="dropdownOpen = true" (mouseleave)="dropdownOpen = false">
-    <span class="admin-name">Contact Admin ▾</span>
-    <div class="dropdown">
-      <p><strong>{{ admin.name }}</strong></p>
-      <p>📞 {{ admin.phone }}</p>
-      <p>✉️ {{ admin.email }}</p>
+  <div class="container">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+        <div class="header-text">
+          <h1 class="title">{{ title }}</h1>
+          <p class="subtitle">{{ subtitle }}</p>
+        </div>
+      </div>
+      <div class="date-badge">
+        <span class="date">{{ currentDate | date:'fullDate' }}</span>
+      </div>
     </div>
   </div>
 </header>

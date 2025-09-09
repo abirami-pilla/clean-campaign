@@ -1,44 +1,110 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RegistrationService } from '../../services/registeration';
+import { User } from '../../models/user.model';
+import { CampaignOption } from '../../models/campagin-option.model';
 
 @Component({
   selector: 'app-registration',
-  templateUrl: './registration.html',
-  styleUrls: ['./registration.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule] // ✅ important for formGroup & directives
+  imports: [CommonModule, FormsModule],
+  templateUrl: './registration.html',
+  styleUrls: ['./registration.css']
 })
-export class RegistrationComponent {
-  registrationForm: FormGroup;
-  submitted = false;
+export class RegistrationComponent implements OnInit {
+  userRegistration: User = {
+    name: '',
+    email: '',
+    location: '',
+    campaignName: ''
+  };
 
-  constructor(private fb: FormBuilder) {
-    this.registrationForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      age: ['', [Validators.required, Validators.min(10), Validators.max(100)]],
-      occupation: ['', Validators.required],
-      location: ['', Validators.required],
-    });
+  campaignOptions: CampaignOption[] = [];
+  isSubmitting = false;
+  showSuccess = false;
+  formErrors: { [key: string]: string } = {};
+
+  constructor(private registrationService: RegistrationService) {}
+
+  ngOnInit() {
+    this.campaignOptions = this.registrationService.getCampaignOptions();
   }
 
-  get f() {
-    return this.registrationForm.controls;
+  validateForm(): boolean {
+    this.formErrors = {};
+    let isValid = true;
+
+    // Name validation
+    if (!this.userRegistration.name || this.userRegistration.name.trim().length < 2) {
+      this.formErrors['name'] = 'Name must be at least 2 characters long';
+      isValid = false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!this.userRegistration.email || !emailRegex.test(this.userRegistration.email)) {
+      this.formErrors['email'] = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    // Location validation
+    if (!this.userRegistration.location || this.userRegistration.location.trim().length < 2) {
+      this.formErrors['location'] = 'Location must be at least 2 characters long';
+      isValid = false;
+    }
+
+    // Campaign validation
+    if (!this.userRegistration.campaignName) {
+      this.formErrors['campaignName'] = 'Please select a campaign';
+      isValid = false;
+    }
+
+    return isValid;
   }
 
   onSubmit() {
-    this.submitted = true;
-
-    if (this.registrationForm.invalid) {
+    if (!this.validateForm()) {
       return;
     }
 
-    console.log('Form Submitted', this.registrationForm.value);
-    alert('Thank you for registering!');
+    this.isSubmitting = true;
+    this.showSuccess = false;
 
-    // Reset form after submission
-    this.registrationForm.reset();
-    this.submitted = false;
+    this.registrationService.registerUser(this.userRegistration).subscribe({
+      next: (success) => {
+        if (success) {
+          this.showSuccess = true;
+          this.resetForm();
+        }
+        this.isSubmitting = false;
+      },
+      error: (error) => {
+        console.error('Registration failed:', error);
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  resetForm() {
+    this.userRegistration = {
+      name: '',
+      email: '',
+      location: '',
+      campaignName: ''
+    };
+    this.formErrors = {};
+  }
+
+  getSelectedCampaign(): CampaignOption | undefined {
+    return this.campaignOptions.find(option => option.value === this.userRegistration.campaignName);
+  }
+
+  hasError(field: string): boolean {
+    return !!this.formErrors[field];
+  }
+
+  getError(field: string): string {
+    return this.formErrors[field] || '';
   }
 }

@@ -1,4 +1,5 @@
-import { FormsModule } from '@angular/forms';
-import { importProvidersFrom } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app';
 
-providers: [ importProvidersFrom(FormsModule) ]
+bootstrapApplication(AppComponent)
+  .catch(err => console.error(err));
